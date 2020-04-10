@@ -1,0 +1,43 @@
+<div class="table-responsive mb-3">
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <td></td>
+        <td *ngFor="let tableHead of simplexTableau.x_vector">
+          {{ tableHead.variable }}<sub>{{ tableHead.variableIndex + 1 }}</sub
+          ><span *ngIf="tableHead.hasAsterisk">*</span>
+        </td>
+        <td *ngFor="let tableHead of simplexTableau.v_vector">
+          {{ tableHead.variable }}<sub>{{ tableHead.variableIndex + 1 }}</sub
+          ><span *ngIf="tableHead.hasAsterisk">*</span>
+        </td>
+        <td>b</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tableHead of simplexTableau.u_vector; let i = index">
+        <td>
+          {{ tableHead.variable }}<sub>{{ tableHead.variableIndex + 1 }}</sub
+          ><span *ngIf="tableHead.hasAsterisk">*</span>
+        </td>
+        <td *ngFor="let coefficient of simplexTableau.coefficietsMatrix[i]">
+          {{ coefficient }}
+        </td>
+        <td>{{ simplexTableau.b_vector[i] }}</td>
+      </tr>
+      <tr>
+        <td><span *ngIf="simplexTableau.z_minus_sign">-</span>z</td>
+        <td *ngFor="let coefficient of simplexTableau.c_vector">
+          {{ coefficient }}
+        </td>
+        <td>{{ simplexTableau.optimum }}</td>
+      </tr>
+      <tr *ngIf="simplexTableau.z_asterisk_needed">
+        <td>-z*</td>
+        <td *ngFor="let coefficient of simplexTableau.z_asterisk_vector">
+          {{ coefficient }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

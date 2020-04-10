@@ -8,12 +8,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SimplexSolverComponent } from './components/simplex-solver/simplex-solver.component';
+import { SimplexTableauComponent } from './components/simplex-tableau/simplex-tableau.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    SimplexSolverComponent
+    SimplexSolverComponent,
+    SimplexTableauComponent
   ],
   imports: [
     BrowserModule,
