@@ -1,0 +1,21 @@
+.form-control-w-5 {
+    max-width: 50px;
+    display: inline;
+}
+
+.form-control-w-6 {
+    max-width: 60px;
+    display: inline;
+}
+
+.my-icon-class {
+    vertical-align: center;
+}
+
+.btn-w-20 {
+    max-width: 240px;
+}
+
+.btn {
+    vertical-align: baseline;
+}

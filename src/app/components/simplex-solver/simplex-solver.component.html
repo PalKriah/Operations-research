@@ -1,0 +1,130 @@
+<h1 class="text-primary text-uppercase font-weight-bold pb-3">
+  Szimplex megoldó:
+</h1>
+<div class="card">
+  <div class="card-header">
+    <h3>Ismeretlenek száma:</h3>
+  </div>
+  <div class="card-body">
+    <input
+      class="form-control w-25"
+      type="number"
+      [(ngModel)]="variableCount"
+      (input)="adjustArrays()"
+    />
+  </div>
+</div>
+
+<div class="card mt-5" *ngIf="variableCount > 0">
+  <div class="card-header">
+    <h3>Célfüggvény:</h3>
+  </div>
+  <div class="card-body flex-row">
+    <p class="d-inline">z =</p>
+    <span
+      *ngFor="
+        let item of [].constructor(variableCount);
+        let i = index;
+        let last = last
+      "
+      class="form-group-row mb-2"
+    >
+      <input
+        class="form-control form-control-w-5 ml-1 mr-2"
+        type="string"
+        [(ngModel)]="goalFunction[i]"
+      />
+      <p class="d-inline">
+        x<sub>{{ i + 1 }}</sub
+        ><span *ngIf="!last"> + </span>
+      </p>
+    </span>
+    <span class="mr-2 ml-2 text-primary"
+      ><fa-icon
+        [icon]="faLongArrowAltRight"
+        size="2x"
+        [styles]="{ 'vertical-align': '-0.8rem' }"
+      ></fa-icon
+    ></span>
+    <button (click)="toggleType()" class="btn btn-primary">
+      {{ problemType }}
+    </button>
+  </div>
+
+  <div class="card-header">
+    <h3>Megkötések:</h3>
+  </div>
+  <div class="card-body">
+    <div
+      *ngFor="
+        let item of [].constructor(restrictionsCount);
+        let j = index;
+        let last = last
+      "
+      class="mb-2"
+    >
+      <span
+        *ngFor="
+          let item of [].constructor(variableCount);
+          let i = index;
+          let last = last
+        "
+        class="form-group-row"
+      >
+        <input
+          class="form-control form-control-w-5 ml-1 mr-2"
+          type="string"
+          [(ngModel)]="restrictions[j].variableArray[i]"
+        />
+        <p class="d-inline">
+          x<sub>{{ i + 1 }}</sub
+          ><span *ngIf="!last"> + </span>
+        </p>
+      </span>
+      <select
+        [(ngModel)]="restrictions[j].operator"
+        class="form-control form-control-w-6 mr-2 ml-2"
+      >
+        <option *ngFor="let operator of keys(operators)" [ngValue]="operator">{{
+          operators[operator]
+        }}</option>
+      </select>
+      <input
+        class="form-control form-control-w-5 ml-1 mr-2"
+        type="string"
+        [(ngModel)]="restrictions[j].constraint"
+      />
+      <button (click)="deleteRestriction(j)" class="btn btn-dark">
+        <fa-icon [icon]="faTimesCircle"></fa-icon>
+      </button>
+    </div>
+    <p>
+      x<sub
+        *ngFor="
+          let item of [].constructor(variableCount);
+          let i = index;
+          let last = last
+        "
+        >{{ i + 1 }}<span *ngIf="!last">, </span></sub
+      >
+      ≥ 0
+    </p>
+    <button
+      (click)="addRestriction()"
+      class="btn btn-info mt-2 btn-block btn-w-20"
+    >
+      <fa-icon [icon]="faPlus"></fa-icon> Megkötés hozzáadása
+    </button>
+  </div>
+
+  <button
+    (click)="onSolve()"
+    class="btn btn-success text-uppercase font-weight-bold"
+  >
+    Megold
+  </button>
+</div>
+
+<div class="mt-3">
+  <flash-messages></flash-messages>
+</div>
