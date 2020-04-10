@@ -30,7 +30,7 @@
       class="form-group-row mb-2"
     >
       <input
-        class="form-control form-control-w-5 ml-1 mr-2"
+        class="form-control form-control-w-7 m-1"
         type="string"
         [(ngModel)]="goalFunction[i]"
       />
@@ -72,7 +72,7 @@
         class="form-group-row"
       >
         <input
-          class="form-control form-control-w-5 ml-1 mr-2"
+          class="form-control form-control-w-7 m-1"
           type="string"
           [(ngModel)]="restrictions[j].variableArray[i]"
         />
@@ -83,14 +83,14 @@
       </span>
       <select
         [(ngModel)]="restrictions[j].operator"
-        class="form-control form-control-w-6 mr-2 ml-2"
+        class="form-control form-control-w-6 m-1"
       >
         <option *ngFor="let operator of keys(operators)" [ngValue]="operator">{{
           operators[operator]
         }}</option>
       </select>
       <input
-        class="form-control form-control-w-5 ml-1 mr-2"
+        class="form-control form-control-w-7 m-1"
         type="string"
         [(ngModel)]="restrictions[j].constraint"
       />
@@ -118,7 +118,7 @@
   </div>
 
   <button
-    (click)="onSolve()"
+    (click)="onSolveFixed()"
     class="btn btn-success text-uppercase font-weight-bold"
   >
     Megold
