@@ -33,6 +33,7 @@
               >x<sub>{{ i + 1 }}</sub>
             </span>
           </td>
+          <td>z</td>
         </tr>
       </thead>
       <tbody>
@@ -45,6 +46,16 @@
               >/<span class="denom">{{ item.denominator }}</span>
             </span>
             <span *ngIf="!isFraction(item)">{{ item }}</span>
+          </td>
+          <td>
+            <span *ngIf="isFraction(result.optimum)" class="fr">
+              <span *ngIf="result.optimum.negative">-</span>
+              <span class="nom">{{ result.optimum.nominator }}</span
+              >/<span class="denom">{{ result.optimum.denominator }}</span>
+            </span>
+            <span *ngIf="!isFraction(result.optimum)">{{
+              result.optimum
+            }}</span>
           </td>
         </tr>
       </tbody>
@@ -94,6 +105,7 @@
               >x<sub>{{ i + 1 }}</sub>
             </span>
           </td>
+          <td>z</td>
         </tr>
       </thead>
       <tbody>
@@ -106,6 +118,18 @@
               >/<span class="denom">{{ item.denominator }}</span>
             </span>
             <span *ngIf="!isFraction(item)">{{ item }}</span>
+          </td>
+          <td>
+            <span *ngIf="isFraction(result.alternate_optimum)" class="fr">
+              <span *ngIf="result.alternate_optimum.negative">-</span>
+              <span class="nom">{{ result.alternate_optimum.nominator }}</span
+              >/<span class="denom">{{
+                result.alternate_optimum.denominator
+              }}</span>
+            </span>
+            <span *ngIf="!isFraction(result.alternate_optimum)">{{
+              result.alternate_optimum
+            }}</span>
           </td>
         </tr>
       </tbody>
