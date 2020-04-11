@@ -6,6 +6,8 @@ import { Operator } from '../../data_structures/Operator';
 import { Restriction } from 'src/app/data_structures/Restriction';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Solver } from 'src/app/solver';
+import { SimplexTableau } from 'src/app/data_structures/SimplexTableau';
+import { Result } from 'src/app/data_structures/Result';
 
 @Component({
   selector: 'app-simplex-solver',
@@ -21,13 +23,16 @@ export class SimplexSolverComponent implements OnInit {
   keys = Object.keys;
   operators = Operator;
 
+  solved: boolean = false;
+  result: Result;
+
   problemType: ProblemType = ProblemType.Max;
   variableCount: number = 1;
   goalFunction: number[] = [];
   restrictionsCount: number = 1;
   restrictions: Restriction[] = [
     {
-      variableArray: [],
+      coefficientsArray: [],
       operator: Operator.LEq,
       constraint: null
     }
@@ -50,10 +55,13 @@ export class SimplexSolverComponent implements OnInit {
       return;
     }
 
-    this.goalFunction.forEach(variable => {
+    this.goalFunction.forEach((variable, index) => {
       if (!(/^(-?[0-9]+)$/.test(variable.toString()))) {
         this.flashMessage.show('Hibás kitevő a célfüggvényben!', { cssClass: 'alert-danger', timeout: 10000 });
         return;
+      }
+      else {
+        this.goalFunction[index] = Number(variable);
       }
     });
 
@@ -62,7 +70,7 @@ export class SimplexSolverComponent implements OnInit {
       return;
     }
 
-    this.restrictions.forEach(restriction => {
+    this.restrictions.forEach((restriction, index) => {
       if (restriction.constraint == undefined) {
         this.flashMessage.show('Hiányzó számossági megkötés!', { cssClass: 'alert-danger', timeout: 10000 });
         return;
@@ -72,24 +80,34 @@ export class SimplexSolverComponent implements OnInit {
         this.flashMessage.show('Hibás számossági megkötés!', { cssClass: 'alert-danger', timeout: 10000 });
         return;
       }
+      else {
+        this.restrictions[index].constraint = Number(restriction.constraint);
+      }
 
-      if (restriction.variableArray.length != this.variableCount || restriction.variableArray.includes(undefined)) {
+      if (restriction.coefficientsArray.length != this.variableCount || restriction.coefficientsArray.includes(undefined)) {
         this.flashMessage.show('Hiányzó kitevő az egyik megkötésben!', { cssClass: 'alert-danger', timeout: 10000 });
         return;
       }
 
-      restriction.variableArray.forEach(variable => {
+      this.restrictions[index].operator = Operator[restriction.operator];
+
+      restriction.coefficientsArray.forEach((variable, j) => {
         if (!(/^(-?[0-9]+)$/.test(variable.toString()))) {
           this.flashMessage.show('Hibás kitevő az egyik megkötésben!', { cssClass: 'alert-danger', timeout: 10000 });
           return;
         }
+        else {
+          this.restrictions[index].coefficientsArray[j] = Number(variable);
+        }
       });
-
-      this.flashMessage.show('Siker!', { cssClass: 'alert-success', timeout: 10000 });
-
-      this.solver = new Solver();
     });
 
+    this.flashMessage.show('Siker!', { cssClass: 'alert-success', timeout: 10000 });
+
+    this.solver = new Solver(this.problemType, this.goalFunction, this.restrictions);
+
+    this.result = this.solver.solve();
+    this.solved = true;
   }
 
   toggleType() {
@@ -106,7 +124,7 @@ export class SimplexSolverComponent implements OnInit {
   addRestriction() {
     this.restrictionsCount++;
     this.restrictions.push({
-      variableArray: [],
+      coefficientsArray: [],
       operator: Operator.LEq,
       constraint: null
     });
@@ -115,12 +133,16 @@ export class SimplexSolverComponent implements OnInit {
   adjustArrays() {
     this.goalFunction = this.goalFunction.slice(0, this.variableCount);
     this.restrictions.forEach((restrction, index) => {
-      this.restrictions[index].variableArray = restrction.variableArray.slice(0, this.variableCount);
+      this.restrictions[index].coefficientsArray = restrction.coefficientsArray.slice(0, this.variableCount);
     });
   }
 
   deleteRestriction(index: number) {
     this.restrictions.splice(index, 1);
     this.restrictionsCount--;
+  }
+
+  isFraction(value): boolean {
+    return typeof value != 'number';
   }
 }
