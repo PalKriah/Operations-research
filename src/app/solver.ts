@@ -21,7 +21,8 @@ export class Solver {
         optimum: null,
         u_vector: [],
         x_vector: [],
-        has_result: false
+        has_result: false,
+        has_alternate_result: false
     };
 
     constructor(problemType: ProblemType, goalFunction: number[], restrictions: Restriction[]) {
@@ -59,41 +60,25 @@ export class Solver {
             return;
         }
 
-        var v_holder = [];
-        this.result.optimum = this.simplexTableau.z_minus_sign ? -this.simplexTableau.optimum : this.simplexTableau.optimum;
-        this.simplexTableau.u_vector.forEach((header, index) => {
-            if (header.variable == 'x') {
-                this.result.x_vector[header.variableIndex] = this.simplexTableau.b_vector[index];
-            }
-            else if (header.variable == 'u') {
-                this.result.u_vector[header.variableIndex] = this.simplexTableau.b_vector[index];
-            }
-            else {
-                v_holder.push({ index: header.variableIndex, value: this.simplexTableau.b_vector[index] });
-            }
-        });
-
-        this.simplexTableau.x_vector.forEach((header, index) => {
-            if (header.variable == 'x') {
-                this.result.x_vector[header.variableIndex] = 0;
-            }
-            else if (header.variable == 'u') {
-                this.result.u_vector[header.variableIndex] = 0;
-            }
-            else {
-                v_holder.push({ index: header.variableIndex, value: 0 });
-            }
-        });
-
-        v_holder.forEach(item => this.result.u_vector[item.index] = item.value);
-
         this.result.has_result = true;
+
+        var result = this.simplexTableau.getResult();
+        this.result.optimum = result.optimum;
+        this.result.x_vector = result.x_vector;
+        this.result.u_vector = result.u_vector;
 
         if (this.simplexTableau.has_multiple_optimum) {
             generatingItem = this.simplexTableau.getGeneratingItem({ vector: this.simplexTableau.c_vector, zeroInclude: true });
-            this.simplexTableau.changeHeader(generatingItem);
-            this.simplexTableau.generate(generatingItem);
-            //this.result.tables.push(JSON.parse(JSON.stringify(this.simplexTableau)));
+            if (generatingItem != undefined) {
+                this.result.has_alternate_result = true;
+                this.simplexTableau.changeHeader(generatingItem);
+                this.simplexTableau.generate(generatingItem);
+                this.result.alternative_table.push(JSON.parse(JSON.stringify(this.simplexTableau)));
+                var result = this.simplexTableau.getResult();
+                this.result.alternate_optimum = result.optimum;
+                this.result.alternate_x_vector = result.x_vector;
+                this.result.alternate_u_vector = result.u_vector;
+            }
         }
 
         return this.result;

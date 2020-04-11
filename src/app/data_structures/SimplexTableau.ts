@@ -250,4 +250,38 @@ export class SimplexTableau {
             return true;
         }
     }
+
+    getResult(): { x_vector: (Fraction | number)[], u_vector: (Fraction | number)[], optimum: (Fraction | number) } {
+        var x_vector: (Fraction | number)[] = [];
+        var u_vector: (Fraction | number)[] = [];
+        var v_vector = [];
+
+        this.u_vector.forEach((header, index) => {
+            if (header.variable == 'x') {
+                x_vector[header.variableIndex] = this.b_vector[index];
+            }
+            else if (header.variable == 'u') {
+                u_vector[header.variableIndex] = this.b_vector[index];
+            }
+            else {
+                v_vector.push({ index: header.variableIndex, value: this.b_vector[index] });
+            }
+        });
+
+        this.x_vector.forEach((header, index) => {
+            if (header.variable == 'x') {
+                x_vector[header.variableIndex] = 0;
+            }
+            else if (header.variable == 'u') {
+                u_vector[header.variableIndex] = 0;
+            }
+            else {
+                v_vector.push({ index: header.variableIndex, value: 0 });
+            }
+        });
+
+        v_vector.forEach(item => u_vector[item.index] = item.value);
+
+        return { x_vector, u_vector, optimum: this.z_minus_sign ? -this.optimum : this.optimum };
+    }
 }
