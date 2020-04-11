@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SimplexSolverComponent } from './components/simplex-solver/simplex-solver.component';
 import { SimplexTableauComponent } from './components/simplex-tableau/simplex-tableau.component';
+import { ResultComponent } from './components/result/result.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     SimplexSolverComponent,
-    SimplexTableauComponent
+    SimplexTableauComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,

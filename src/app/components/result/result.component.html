@@ -1,0 +1,141 @@
+<div>
+  <h2>Induló táblázat:</h2>
+  <app-simplex-tableau
+    [simplexTableau]="result.start_table"
+  ></app-simplex-tableau>
+</div>
+<div *ngFor="let tableau of result.z_asterisk_tables; let i = index">
+  <h2>Simplex tábla {{ i + 1 }} (-z* alapján):</h2>
+  <app-simplex-tableau [simplexTableau]="tableau"></app-simplex-tableau>
+</div>
+<h1 *ngIf="result.z_asterisk_no_result" class="text-center text-danger">
+  A feladatnak nincs megoldása!
+</h1>
+<div *ngFor="let tableau of result.z_tables; let i = index">
+  <h2>
+    Simplex tábla {{ i + 1 }} (<span *ngIf="tableau.z_minus_sign">-</span>z
+    alapján):
+  </h2>
+  <app-simplex-tableau [simplexTableau]="tableau"></app-simplex-tableau>
+</div>
+<h1 *ngIf="result.z_no_result" class="text-center text-danger">
+  A feladatnak nincs megoldása!
+</h1>
+<div *ngIf="result.has_result">
+  <h2 class="text-success">Megoldás:</h2>
+  <div class="table-responsive mb-3">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <td>Változó:</td>
+          <td *ngFor="let item of result.x_vector; let i = index">
+            <span
+              >x<sub>{{ i + 1 }}</sub>
+            </span>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Érték:</td>
+          <td *ngFor="let item of result.x_vector">
+            <span *ngIf="isFraction(item)" class="fr">
+              <span *ngIf="item.negative">-</span>
+              <span class="nom">{{ item.nominator }}</span
+              >/<span class="denom">{{ item.denominator }}</span>
+            </span>
+            <span *ngIf="!isFraction(item)">{{ item }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-responsive mb-3">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <td>Eltérés változó:</td>
+          <td *ngFor="let item of result.u_vector; let i = index">
+            <span
+              >u<sub>{{ i + 1 }}</sub>
+            </span>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Érték:</td>
+          <td *ngFor="let item of result.u_vector">
+            <span *ngIf="isFraction(item)" class="fr">
+              <span *ngIf="item.negative">-</span>
+              <span class="nom">{{ item.nominator }}</span
+              >/<span class="denom">{{ item.denominator }}</span>
+            </span>
+            <span *ngIf="!isFraction(item)">{{ item }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div *ngIf="result.has_alternate_result">
+  <div *ngFor="let tableau of result.alternative_table; let i = index">
+    <h2>Alternatív szimplex tábla:</h2>
+    <app-simplex-tableau [simplexTableau]="tableau"></app-simplex-tableau>
+  </div>
+  <h2 class="text-success">Alternatív megoldás:</h2>
+  <div class="table-responsive mb-3">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <td>Változó:</td>
+          <td *ngFor="let item of result.alternate_x_vector; let i = index">
+            <span
+              >x<sub>{{ i + 1 }}</sub>
+            </span>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Érték:</td>
+          <td *ngFor="let item of result.alternate_x_vector">
+            <span *ngIf="isFraction(item)" class="fr">
+              <span *ngIf="item.negative">-</span>
+              <span class="nom">{{ item.nominator }}</span
+              >/<span class="denom">{{ item.denominator }}</span>
+            </span>
+            <span *ngIf="!isFraction(item)">{{ item }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-responsive mb-3">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <td>Eltérés változó:</td>
+          <td *ngFor="let item of result.alternate_u_vector; let i = index">
+            <span
+              >u<sub>{{ i + 1 }}</sub>
+            </span>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Érték:</td>
+          <td *ngFor="let item of result.alternate_u_vector">
+            <span *ngIf="isFraction(item)" class="fr">
+              <span *ngIf="item.negative">-</span>
+              <span class="nom">{{ item.nominator }}</span
+              >/<span class="denom">{{ item.denominator }}</span>
+            </span>
+            <span *ngIf="!isFraction(item)">{{ item }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
