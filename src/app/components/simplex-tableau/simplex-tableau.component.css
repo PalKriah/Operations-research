@@ -1,0 +1,9 @@
+.fr .nom {
+    font-size: 75%;
+    vertical-align: 0.5ex;
+}
+
+.fr .denom {
+    font-size: 75%;
+    vertical-align: -0.5ex;
+}

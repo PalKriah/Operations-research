@@ -7,10 +7,6 @@
           {{ tableHead.variable }}<sub>{{ tableHead.variableIndex + 1 }}</sub
           ><span *ngIf="tableHead.hasAsterisk">*</span>
         </td>
-        <td *ngFor="let tableHead of simplexTableau.v_vector">
-          {{ tableHead.variable }}<sub>{{ tableHead.variableIndex + 1 }}</sub
-          ><span *ngIf="tableHead.hasAsterisk">*</span>
-        </td>
         <td>b</td>
       </tr>
     </thead>
@@ -21,21 +17,58 @@
           ><span *ngIf="tableHead.hasAsterisk">*</span>
         </td>
         <td *ngFor="let coefficient of simplexTableau.coefficietsMatrix[i]">
-          {{ coefficient }}
+          <span *ngIf="isFraction(coefficient)" class="fr">
+            <span *ngIf="coefficient.negative">-</span>
+            <span class="nom">{{ coefficient.nominator }}</span
+            >/<span class="denom">{{ coefficient.denominator }}</span>
+          </span>
+          <span *ngIf="!isFraction(coefficient)">{{ coefficient }}</span>
         </td>
-        <td>{{ simplexTableau.b_vector[i] }}</td>
+        <td>
+          <span *ngIf="isFraction(simplexTableau.b_vector[i])" class="fr">
+            <span *ngIf="simplexTableau.b_vector[i].negative">-</span>
+            <span class="nom">{{ simplexTableau.b_vector[i].nominator }}</span
+            >/<span class="denom">{{
+              simplexTableau.b_vector[i].denominator
+            }}</span>
+          </span>
+          <span *ngIf="!isFraction(simplexTableau.b_vector[i])">{{
+            simplexTableau.b_vector[i]
+          }}</span>
+        </td>
       </tr>
       <tr>
         <td><span *ngIf="simplexTableau.z_minus_sign">-</span>z</td>
         <td *ngFor="let coefficient of simplexTableau.c_vector">
-          {{ coefficient }}
+          <span *ngIf="isFraction(coefficient)" class="fr">
+            <span *ngIf="coefficient.negative">-</span>
+            <span class="nom">{{ coefficient.nominator }}</span
+            >/<span class="denom">{{ coefficient.denominator }}</span>
+          </span>
+          <span *ngIf="!isFraction(coefficient)">{{ coefficient }}</span>
         </td>
-        <td>{{ simplexTableau.optimum }}</td>
+        <td>
+          <span *ngIf="isFraction(simplexTableau.optimum)" class="fr">
+            <span *ngIf="simplexTableau.optimum.negative">-</span>
+            <span class="nom">{{ simplexTableau.optimum.nominator }}</span
+            >/<span class="denom">{{
+              simplexTableau.optimum.denominator
+            }}</span>
+          </span>
+          <span *ngIf="!isFraction(simplexTableau.optimum)">{{
+            simplexTableau.optimum
+          }}</span>
+        </td>
       </tr>
       <tr *ngIf="simplexTableau.z_asterisk_needed">
         <td>-z*</td>
         <td *ngFor="let coefficient of simplexTableau.z_asterisk_vector">
-          {{ coefficient }}
+          <span *ngIf="isFraction(coefficient)" class="fr">
+            <span *ngIf="coefficient.negative">-</span>
+            <span class="nom">{{ coefficient.nominator }}</span
+            >/<span class="denom">{{ coefficient.denominator }}</span>
+          </span>
+          <span *ngIf="!isFraction(coefficient)">{{ coefficient }}</span>
         </td>
       </tr>
     </tbody>

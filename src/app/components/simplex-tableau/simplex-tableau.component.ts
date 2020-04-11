@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SimplexTableau } from 'src/app/data_structures/simplexTableau';
+import { Fraction } from 'src/app/data_structures/Fraction';
 
 @Component({
   selector: 'app-simplex-tableau',
@@ -11,6 +12,10 @@ export class SimplexTableauComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  isFraction(value): boolean {
+    return typeof value != 'number';
   }
 
 }
