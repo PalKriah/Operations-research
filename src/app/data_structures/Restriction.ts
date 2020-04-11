@@ -1,7 +1,7 @@
 import { Operator } from './Operator';
 
 export interface Restriction {
-    variableArray: number[];
+    coefficientsArray: number[];
     operator: Operator;
     constraint: number;
 }
