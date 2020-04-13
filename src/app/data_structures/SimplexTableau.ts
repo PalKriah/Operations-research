@@ -281,7 +281,14 @@ export class SimplexTableau {
         });
 
         v_vector.forEach(item => u_vector[item.index] = item.value);
+        var optimum = this.optimum;
+        if(optimum instanceof Fraction) {
+            optimum.negative = this.z_minus_sign ? !optimum.negative : optimum.negative;
+        }
+        else {
+            optimum = this.z_minus_sign ? -this.optimum : this.optimum
+        }
 
-        return { x_vector, u_vector, optimum: this.z_minus_sign ? -this.optimum : this.optimum };
+        return { x_vector, u_vector, optimum: optimum };
     }
 }
